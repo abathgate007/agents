@@ -8,35 +8,17 @@ This proof of concept uses multiple large language models (LLMs) to independentl
 
 ## 🚀 What It Does
 
-- Accepts a software requirements specification (SRS) and architecture diagram (in Mermaid format).
-- Submits the review request to multiple LLMs (OpenAI, Anthropic Claude, Gemini, DeepSeek, Groq, Ollama).
-- Collects and displays each model's security design review.
-- Judges and ranks the LLMs based on the completeness and accuracy of their reviews.
-- Merges the best parts of each response into a single synthesized report.
+- Accepts a software requirements and design specification for a product/feature release
+- Assesses if there is sufficient documentation to perform a design review (rejects if necessary)
+- Converts diagrams to mermaid format
+- Submits the review request to multiple LLMs getting security design reviews as output
+- Each ouputted security design review is evaluated and may be rejected with reasons back to the model N times
+- All the accepted design reviews are then merged to get a superset of security findings and recommendations with no duplicates. 
+- This merging process is also subject to an evaluation-reject-with-reason loop
 
 ---
 
-## 📌 Review Steps Followed by the Agent
 
-Each model is asked to perform a full security design review including:
-
-1. Define scope and system boundaries  
-2. Create detailed data flow diagrams  
-3. Apply STRIDE or similar frameworks  
-4. Rate and prioritize threats  
-5. Document mitigations  
-6. Rank risks  
-7. Provide a final summary and recommendations  
-
----
-
-## 📁 Project Structure
-
-- `design_review_agent_poc.py`: The interactive Jupyter notebook powering the whole process
-- `.env`: API keys for OpenAI, Claude, Gemini, etc. (excluded from repo)
-- `README.md`: This file
-
----
 
 ## 🛠️ Setup
 
@@ -51,28 +33,10 @@ DEEPSEEK_API_KEY=your-deepseek-key
 GROQ_API_KEY=your-groq-key
 Install dependencies:
 
-
-🧠 Example Inputs
-The included prompt contains requirements and a full architectural diagram for the OWASP Juice Shop — a purposely vulnerable e-commerce platform used for security testing.
-
-📊 Outputs
-Individual LLM security reviews (rendered via Markdown)
-
-Ranked JSON output showing which LLM performed best
-
-Final merged security review, synthesized into clear sections
-
-✅ Status
-PoC complete and functional
-
-Easily extensible: swap models, prompt templates, or target architectures
-
 📜 License
 MIT — you are free to copy, adapt, and use this code however you'd like.
 
 🙋‍♂️ Author
 Created by Andrew Bathgate, as a contribution to the agentic security tooling community. PRs, forks, and feedback welcome.
 
-yaml
-Copy
-Edit
+

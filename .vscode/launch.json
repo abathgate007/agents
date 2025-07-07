@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug test_harness as module",
+        "type": "python",
+        "request": "launch",
+        "module": "test_harness.test_harness",   // <-- run as module
+        "console": "integratedTerminal",
+        "justMyCode": false
+      }
+    ]
+  }
