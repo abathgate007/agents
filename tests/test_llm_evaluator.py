@@ -18,7 +18,7 @@ Pass: Yes
 Reason: Output fully satisfies the prompt.
 """.strip()
 
-    with patch("openai.AsyncOpenAI") as mock_client_class:
+    with patch("llm_model.AsyncOpenAI") as mock_client_class:
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
         mock_client_class.return_value = mock_client
@@ -40,7 +40,7 @@ Pass: No
 Reason: The output was too shallow.
 """.strip()
 
-    with patch("openai.AsyncOpenAI") as mock_client_class:
+    with patch("llm_model.AsyncOpenAI") as mock_client_class:
         mock_client = MagicMock()
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
         mock_client_class.return_value = mock_client

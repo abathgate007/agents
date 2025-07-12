@@ -96,15 +96,7 @@ graph TB
         Memory[In-Memory Storage<br/>Sessions, Cache]
     end
     
-    subgraph "Security Features (Intentionally Vulnerable)"
-        XSS[DOM Manipulation]
-        SQLi[Database Queries]
-        AuthBypass[Login System]
-        CSRF[State Changes]
-        Crypto[Password Hashing]
-        IDOR[Resource Access]
-    end
-    
+  
     subgraph "External Dependencies"
         NPM[NPM Packages]
         JWT[JWT Libraries]
@@ -142,14 +134,7 @@ graph TB
     FileUpload --> FileSystem
     Auth --> Memory
     
-    %% Security vulnerabilities (dotted lines indicate vulnerable paths)
-    Angular -.-> XSS
-    Routes -.-> SQLi
-    Auth -.-> AuthBypass
-    Angular -.-> CSRF
-    UserMgmt -.-> Crypto
-    Routes -.-> IDOR
-    
+   
     %% External dependencies
     Express --> NPM
     Auth --> JWT
@@ -170,7 +155,6 @@ graph TB
     class Express,Routes,Auth,Middleware,Challenges appLayer
     class UserMgmt,ProductCatalog,OrderSystem,Feedback,FileUpload,Payment businessLayer
     class SQLite,FileSystem,Memory dataLayer
-    class XSS,SQLi,AuthBypass,CSRF,Crypto,IDOR securityLayer
     class NPM,JWT,Crypto,Sequelize externalLayer"""
 
     design = Design()
