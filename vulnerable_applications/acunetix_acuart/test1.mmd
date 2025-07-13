@@ -1,0 +1,32 @@
+```mermaid
+graph TD
+    subgraph User_Layer
+        User[User]
+    end
+
+    subgraph Web_Server_Layer
+        Apache[Apache Web Server]
+    end
+
+    subgraph Application_Layer
+        subgraph Application_Components
+            Login[Login Page]
+            Catalog[Product Catalog]
+            Guestbook[Guestbook]
+            Admin[Admin Panel]
+        end
+        PHP[PHP Application / AcuArt]
+    end
+
+    subgraph Database_Layer
+        MySQL[MySQL Database / acuart]
+    end
+
+    User -->|HTTP/HTTPS Request| Apache
+    Apache -->|PHP Request| PHP
+    Login -->|PHP Request| PHP
+    Catalog -->|PHP Request| PHP
+    Guestbook -->|PHP Request| PHP
+    Admin -->|PHP Request| PHP
+    PHP -->|SQL Query| MySQL
+```
