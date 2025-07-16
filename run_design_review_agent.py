@@ -1,3 +1,5 @@
+import sys
+import io
 import os
 import asyncio
 import tkinter as tk
@@ -11,7 +13,10 @@ from diagram_to_mermaid_converter import DiagramToMermaidConverter
 from security_design_reviewer import SecurityDesignReviewer
 from llm_model import LLMModel
 from evaluated_output import EvaluatedOutput
+from datetime import datetime
+from IPython.display import Markdown, display
 import config  # Assumes you have a config.py defining openai_api_key, etc.
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def get_file(title, filetypes):
     root = tk.Tk()
@@ -88,8 +93,20 @@ async def run_review(req_path: str, arch_path: str):
     print("\n⏳ Running security design review...")
     try:
         result: EvaluatedOutput = await reviewer.review(design)
+        output_text = result.output_content  # This is the nicely formatted text
         print("\n✅ Security Review Results:\n")
-        print(result)
+        print(output_text)
+        now = datetime.now()
+        timestamp = now.strftime("%#m_%#d_%Y_%#I%M%p") 
+        # Determine output path
+        req_dir = Path(req_path).parent
+        output_filename = f"SecurityReview_{timestamp}.txt"
+        output_path = req_dir / output_filename
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(output_text)
+
+        print(f"\n💾 Review saved to: {output_path}")
+        
     except Exception as e:
         print(f"❌ Review failed: {e}")
 

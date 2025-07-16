@@ -1,37 +1,36 @@
+Certainly! Here is the Mermaid diagram code based on the architecture diagram you provided:
+
 ```mermaid
 graph TD
-    subgraph User_Layer
-        User
+    subgraph User Layer
+        A(User)
     end
-
-    subgraph Web_Server_Layer
-        Apache_Web_Server
+    subgraph Web Server Layer
+        B(Apache Web Server)
     end
-
-    subgraph Application_Layer
-        subgraph Application_Components
-            Login_Page
-            Product_Catalog
-            Guestbook
-            Admin_Panel
+    subgraph Application Layer
+        subgraph Application Components
+            C(Login Page)
+            D(Product Catalog)
+            E(Guestbook)
+            F(Admin Panel)
         end
-        PHP_Application
+        G(PHP Application / AcuArt)
+    end
+    subgraph Database Layer
+        H(MySQL Database / acuart)
     end
 
-    subgraph Database_Layer
-        MySQL_Database
-    end
-
-    User -->|HTTP/HTTPS Request| Apache_Web_Server
-    Apache_Web_Server -->|PHP Request| Login_Page
-    Apache_Web_Server -->|PHP Request| Product_Catalog
-    Apache_Web_Server -->|PHP Request| Guestbook
-    Apache_Web_Server -->|PHP Request| Admin_Panel
-    
-    Login_Page --> PHP_Application
-    Product_Catalog --> PHP_Application
-    Guestbook --> PHP_Application
-    Admin_Panel --> PHP_Application
-
-    PHP_Application -->|SQL Query| MySQL_Database
+    A -- HTTP/HTTPS Request --> B
+    B -- PHP Request --> C
+    B -- PHP Request --> D
+    B -- PHP Request --> E
+    B -- PHP Request --> F
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    G -- SQL Query --> H
 ```
+
+This code will create a diagram showing the interaction between the user, web server, application components, PHP application, and the database.

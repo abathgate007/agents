@@ -51,21 +51,61 @@ class DefaultEvaluationRoutine(EvaluationRoutine):
         Raises:
             RuntimeError: If no model produces acceptable output within allowed attempts.
         """
+
+        suggestions = []
+        all_outputs = []
         print (self.models)
         for attempt in range(self.max_attempts):
             print(f"🧠 Attempt {attempt + 1} of {self.max_attempts}")
-
+            prompt_with_feedback = self._add_suggestions(prompt, suggestions)
             outputs = await asyncio.gather(
-                *[self._generate_and_evaluate(model, prompt, eval_prompt) for model in self.models],
+                *[self._generate_and_evaluate(model, prompt_with_feedback, eval_prompt) for model in self.models],
                 return_exceptions=True
             )
 
             for result in outputs:
-                if isinstance(result, EvaluatedOutput) and result.passes:
-                    print(f"✅ Success from {result.model_name} on attempt {attempt + 1}")
-                    return result
+                if isinstance(result, EvaluatedOutput):
+                    all_outputs.append(result)
+                    suggestions.append(result.evaluation_reason)
 
-        raise RuntimeError("❌ All models failed to produce acceptable output within the allowed attempts.")
+        if suggestions:
+            print("\n📝 Suggestions from all evaluations:")
+            for i, suggestion in enumerate(suggestions, 1):
+                print(f"{i}. {suggestion}")
+        passing = [r for r in all_outputs if r.passes]
+        if passing:
+        # Sort by final_score (descending), fallback to 0
+            best = max(passing, key=lambda r: r.final_score or 0.0)
+            print(f"✅ Best passing result from {best.model_name} (score: {best.final_score})")
+            return best
+
+        # All failed — return best failure
+        print("❌ All attempts failed. Returning best attempt for debugging.")
+        best_failure = max(all_outputs, key=lambda r: r.final_score or 0.0)
+
+        return best_failure
+    def _add_suggestions(self, prompt: str, suggestions: list[str]) -> str:
+        """
+        Prepends suggestions from previous evaluations to the prompt.
+
+        Args:
+            prompt: The original task prompt.
+            suggestions: A list of textual suggestions from prior model evaluations.
+
+        Returns:
+            Modified prompt including improvement suggestions.
+        """
+        if not suggestions:
+            return prompt
+
+        suggestion_block = (
+            "Previous calls to models resulted in the following suggestions:\n"
+            + "\n".join(f"- {s}" for s in suggestions[-3:])  # Show last 3 suggestions
+            + "\n\nUse these suggestions to improve your next output.\n\n"
+        )
+
+        return suggestion_block + prompt
+
 
     async def _generate_and_evaluate(
         self,

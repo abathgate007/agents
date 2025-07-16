@@ -28,13 +28,13 @@ You are an expert evaluator.
 
 Given the following task prompt and the LLM-generated output, assess how well the output fulfills the intent of the prompt.
 
-Provide a score from 0 to 10, a pass/fail recommendation, and a short justification.
+Provide a score from 0 to 10, a pass/fail recommendation, and a short justification with suggestions for improvement.
 
 Respond in the format:
 
 Score: <float from 0 to 10>  
 Pass: <yes/no>  
-Reason: <short explanation>
+Reason: <short explanation and suggestions>
 """
 
 #create the full prompt cleaning it of any leading or trailing whitespace
