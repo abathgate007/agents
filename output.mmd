@@ -1,36 +1,53 @@
-Certainly! Here is the Mermaid diagram code based on the architecture diagram you provided:
+Certainly! Below is the Mermaid diagram code that represents the architecture from the image:
 
 ```mermaid
-graph TD
-    subgraph User Layer
-        A(User)
-    end
-    subgraph Web Server Layer
-        B(Apache Web Server)
-    end
-    subgraph Application Layer
-        subgraph Application Components
-            C(Login Page)
-            D(Product Catalog)
-            E(Guestbook)
-            F(Admin Panel)
-        end
-        G(PHP Application / AcuArt)
-    end
-    subgraph Database Layer
-        H(MySQL Database / acuart)
+graph TD;
+    A(User/Browser Layer) -->|HTTP Requests| B(Web Server Layer)
+    B -->|File Operations| C(File System)
+    B -->|Database Queries| D(Database Layer)
+    C -->|System Calls| E(Operating System Layer)
+    D -->|System Calls| E
+
+    subgraph A [User/Browser Layer]
+        F(Web Browser)
+        F --> UserSearch[User Search]
+        F --> FileManagement[File Management]
+        F --> Guestbook[Guestbook]
+        F --> NetworkTools[Network Tools]
     end
 
-    A -- HTTP/HTTPS Request --> B
-    B -- PHP Request --> C
-    B -- PHP Request --> D
-    B -- PHP Request --> E
-    B -- PHP Request --> F
-    C --> G
-    D --> G
-    E --> G
-    F --> G
-    G -- SQL Query --> H
+    subgraph B [Web Server Layer (Apache + PHP)]
+        G(Apache HTTP) --> PHP[PHP Engine 7.4+]
+        PHP --> UserSearch
+        PHP --> Authentication[Authentication]
+        PHP --> Sessions[Sessions]
+        PHP --> UserAdmin[User Admin]
+        PHP --> Security[Security]
+        PHP --> Guestbook
+        PHP --> NetworkTools
+        PHP --> FileUpload[File Upload]
+        PHP --> Configuration[Configuration]
+    end
+
+    subgraph C [File System]
+        H(Upload Directory)
+        I(Config Files)
+        J(Application Code)
+    end
+
+    subgraph D [Database Layer]
+        K(MySQL/MariaDB)
+        L(users)
+        M(guestbook)
+    end
+
+    subgraph E [Operating System Layer]
+        N(Linux/Windows)
+        O(System Services)
+        P(File System)
+        Q(Network Stack)
+        R(API Endpoints)
+    end
 ```
 
-This code will create a diagram showing the interaction between the user, web server, application components, PHP application, and the database.
+This diagram represents the layers and components as described in the architecture.

@@ -35,8 +35,8 @@ class LLMFileProcessor:
         self.model = model
 
     def _get_all_files(self) -> List[Path]:
-        ignored_extensions = {'.txt', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.svg'}
-        ignored_dirs = {'vulnerable_applications', 'tests', 'test_harness', '__pycache__'}
+        ignored_extensions = {'ico.', '.md', '.css', '.lock', '.txt', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.svg'}
+        ignored_dirs = {'tests', 'test_harness', '__pycache__'}
 
         files = []
         for p in self.folder_path.rglob("*"):
